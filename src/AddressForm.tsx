@@ -45,7 +45,7 @@ export function AddressForm({
       <label>Zip</label>
       <input
         required
-        type="text"
+        type="number"
         value={zip}
         onChange={e => updateFields({ zip: e.target.value })}
       />
