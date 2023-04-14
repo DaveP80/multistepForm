@@ -28,6 +28,16 @@ const INITIAL_DATA: FormData = {
   password: "",
 }
 
+
+interface EmailData {
+  email: string[];
+}
+
+const myEmail: EmailData = {
+  email: []
+};
+
+
 function App() {
   const [data, setData] = useState(INITIAL_DATA)
   function updateFields(fields: Partial<FormData>) {
@@ -44,8 +54,28 @@ function App() {
 
   function onSubmit(e: FormEvent) {
     e.preventDefault()
+    if (isLastStep) {
+      //check if duplicate emails are in array
+      //if duplicate warn the user
+      myEmail.email.push(data.email)
+      if (new Set(myEmail.email).size !== myEmail.email.length) {
+        const seen: { [key: string]: boolean } = {};
+        let i = 0;
+
+        while (i < myEmail.email.length) {
+          if (seen[myEmail.email[i]]) {
+            myEmail.email.splice(i, 1);
+          } else {
+            seen[myEmail.email[i]] = true;
+            i++;
+          }
+        }
+        alert('Duplicate Email Entry'); return back();
+      } else {
+        alert("Successful Account Creation");
+      }
+    }
     if (!isLastStep) return next()
-    alert("Successful Account Creation")
   }
 
   return (
